@@ -25,6 +25,7 @@ class AuthenticateClient:
         error = False
         message = ""
         is_authenticated = gateway_instance.get('is_authenticated', False)
+        gateway_proxy = None
 
         if is_authenticated:
             gateway_uri = gateway_instance.get('gateway_uri', None)
