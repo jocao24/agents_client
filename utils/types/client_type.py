@@ -7,3 +7,4 @@ class ClientType(TypedDict):
     description: str
     local_ip: str
     ip_name_server: NotRequired[str]
+    code_otp: NotRequired[str]

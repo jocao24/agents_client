@@ -18,10 +18,12 @@ class RegisterClient:
         ns_instance = nameserver_conection.get_name_server_instance()
         ManageDataClient().save_data_conecction_client(data_client)
         autenticate_client = AuthenticateClient(data_client, ns_instance)
-        gateway_proxy, is_authenticated, error, message = autenticate_client.authenticate()
+        gateway_proxy, is_authenticated, error, message, is_exit = autenticate_client.authenticate()
         if error and not is_authenticated:
             print(message)
-            exit()
+            if is_exit:
+                exit()
+
 
         while not is_authenticated:
             print('OTP is required. Please enter the OTP: ')

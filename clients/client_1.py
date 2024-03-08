@@ -1,3 +1,5 @@
+import time
+
 from domain.register_client import RegisterClient
 
 
@@ -7,8 +9,11 @@ def deploy_client_1():
     while True:
         skills = gateway_proxy.get_skills()
         if not skills:
-            print('No skills available.')
-            exit()
+            print('Search for skills failed. Please try again later.')
+            # Se reintenta cada 3 segundos hasta que se obtenga una respuesta
+            while not skills:
+                skills = gateway_proxy.get_skills()
+                time.sleep(3)
 
         print('Available skills: ')
         i = 1

@@ -1,3 +1,4 @@
+from utils.errors import ErrorTypes
 from utils.types.client_type import ClientType
 import Pyro4
 
@@ -35,12 +36,11 @@ class AuthenticateClient:
 
             gateway_proxy = Pyro4.Proxy(gateway_uri)
             print("Gateway located. Starting client...", gateway_uri)
-        if "is_error" in gateway_instance:
-            is_error = True
-            if str(gateway_instance["is_error"]).upper() == "OTP_REQUIRED":
-                is_otp_required = True
-                message = 'The OTP is required. Please enter the OTP: '
-            else:
-                message = gateway_instance["is_error"]
+        if "error" in gateway_instance:
+            message = f'{gateway_instance["error"]} - {gateway_instance["message"]}'
+            is_exit = False
+            if ErrorTypes.ip_blocked.value[0] == gateway_instance["error"]:
+                is_exit = True
+            return gateway_proxy, False, True, message, is_exit
 
-        return gateway_proxy, is_authenticated, error, message
+        return gateway_proxy, is_authenticated, error, message, False
